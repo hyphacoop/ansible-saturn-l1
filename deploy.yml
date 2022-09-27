@@ -1,0 +1,11 @@
+- hosts: saturn
+  become: true
+  gather_facts: true
+  roles:
+    - hypha.common.provision_ssh_keys
+    - hypha.common.harden_ssh
+    - hypha.common.setup
+    - hypha.common.unattended_upgrades
+    - geerlingguy.docker
+    - hypha.common.firewall
+    - saturn_l1

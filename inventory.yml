@@ -1,0 +1,40 @@
+all:
+  vars:    
+    # Sensible defaults
+    ansible_user: sysadmin
+    ansible_python_interpreter: /usr/bin/python3
+
+    # Set root and sysadmin passwords on all servers
+    root_password: "{{ secret_root_password }}"
+    sysadmin_password: "{{ secret_root_password }}"
+
+    # Keys to add to all servers
+    ssh_user_keys:
+      - name: yurko
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtv4I2W8TlVsWKKHwASF78cGrn06BJi9dGQQQksW0Ke9ED/KJG2pvG4GXnh57/AOuJtUaS3gXBEj/knE3t/qtvO2cUg1EufnkItzNLdY1B0Hwm98I8O7JdhE+3c/SUIU4Miioj/IlKl8fRxDqx03FTVBdd6Q7kKF79LcobTqo7Pd6i7vnp46U6bBm01tDdRB+g+lok9x+B8umRqqjAGcboucwZ5NrzmLjz/p1wg+5Gva2zcyzBp1aQk7JPhsbElTLfhUP7hJbJ6rFWnebgK8z/vbyofeZljXb6LttttMGoWKg6QAdn61mRwEGff1FUPVLiEVnQ5IY+f97NlQ36c81b yurko@starling"
+
+    SATURN_FILECOIN_ADDRESS: "f17zefq6hzyqoqktmrnpllqby5x773znxpgtv2dty"
+    SATURN_EMAIL: "infra@hypha.coop"
+    SATURN_NETWORK: "test"
+  children:
+    saturn:
+      vars:
+        firewall_ports:
+          - "ssh":
+            port: 22
+          - "ssl":
+            port: 80
+          - "http":
+            port: 443
+        firewall_docker_interface: eth0
+        firewall_docker_ports:
+          - "ssl":
+            port: 80
+          - "http":
+            port: 443
+
+      hosts:
+        saturn.hypha.coop:
+        
+
+    
