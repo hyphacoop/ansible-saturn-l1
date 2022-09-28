@@ -9,3 +9,7 @@
     - geerlingguy.docker
     - hypha.common.firewall
     - saturn_l1
+    - hypha.common.node_exporter
+    - hypha.common.prometheus_exporter_addnode
+    - hypha.common.prometheus_exporter_docker
+    - hypha.common.promtail

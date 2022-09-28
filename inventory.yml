@@ -11,14 +11,24 @@ all:
     # Keys to add to all servers
     ssh_user_keys:
       - name: yurko
-        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtv4I2W8TlVsWKKHwASF78cGrn06BJi9dGQQQksW0Ke9ED/KJG2pvG4GXnh57/AOuJtUaS3gXBEj/knE3t/qtvO2cUg1EufnkItzNLdY1B0Hwm98I8O7JdhE+3c/SUIU4Miioj/IlKl8fRxDqx03FTVBdd6Q7kKF79LcobTqo7Pd6i7vnp46U6bBm01tDdRB+g+lok9x+B8umRqqjAGcboucwZ5NrzmLjz/p1wg+5Gva2zcyzBp1aQk7JPhsbElTLfhUP7hJbJ6rFWnebgK8z/vbyofeZljXb6LttttMGoWKg6QAdn61mRwEGff1FUPVLiEVnQ5IY+f97NlQ36c81b yurko@starling"
-
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtv4I2W8TlVsWKKHwASF78cGrn06BJi9dGQQQksW0Ke9ED/KJG2pvG4GXnh57/AOuJtUaS3gXBEj/knE3t/qtvO2cUg1EufnkItzNLdY1B0Hwm98I8O7JdhE+3c/SUIU4Miioj/IlKl8fRxDqx03FTVBdd6Q7kKF79LcobTqo7Pd6i7vnp46U6bBm01tDdRB+g+lok9x+B8umRqqjAGcboucwZ5NrzmLjz/p1wg+5Gva2zcyzBp1aQk7JPhsbElTLfhUP7hJbJ6rFWnebgK8z/vbyofeZljXb6LttttMGoWKg6QAdn61mRwEGff1FUPVLiEVnQ5IY+f97NlQ36c81b yurko@hypha"
+      - name: "elon"
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCt7N4cJCFFmetGyDo2giMdPlHOBOdEJt8DnidBTMxevlGi02YVLwdYwbPtdoSHJKRlY4boV80sPOhMI3Im2TXNXHQIhO2LWKdSUTdfFU5ul+ySeZlUm3eDptMAYhQgZ772rDzq3gbr014TL1YHpepF1L0zwZgY03OHmP741hcaIjMxc4xSNs09auE++Ob+n5Nu9OEFEAIUKm7UVYDTY9iLVN6hj7eXAuMzFvvHGptvfosLjLxk+zx6VHcKdu9EZT/OtNjSyCDfuXyWt3Yfg9aiB32W7GftlWMbjG9+3W7hFiX9zAOrLkZYqXQ89h0B8IgMK3AZCE73PHa6Rl1XaekSnrwcDDzh3Ac2HeVSveHmuJPzX641f67+jOt4JBgsS/v8pPAvdXyeOBCcE6OT58qKMH/nDdUAryY7JhnrxIImLuAiUR3aRdAM/M0Q9C56/ctLd8gfAT3+1vuxraTgpmmhvqgZPFUAeRl40Ct//DSJAXA3jYOx8VT4D9M+aUzXJEDl0hm5Q4IT2zzr1eikVqJLN1199oAI7pm/ukRARBXucFgY/RyYq0oFfDnuJnwTmnjViDKzRrlCNiKKQi4k8qeoVslUxYj0dUOmUU8rjnHJ1N0eZUmZ/zl4WGQRNbLzAe4ljyG2HH4o89TEfdvwSal1Yh1Uflzr3SwwxJWJOLVMPQ== elon@hypha"
+ 
     SATURN_FILECOIN_ADDRESS: "f17zefq6hzyqoqktmrnpllqby5x773znxpgtv2dty"
     SATURN_EMAIL: "infra@hypha.coop"
     SATURN_NETWORK: "test"
+
+    monitor_server: monitor.prod.hypha.coop
+    loki_url: "https://{{monitor_server}}:443/loki/api/v1/push"
+    loki_username: loki
+    loki_password: "{{secret_loki_password}}"
+    cadvisor_exporter_port: 9110
+
   children:
     saturn:
       vars:
+        monitor_job: "production"
         firewall_ports:
           - "ssh":
             port: 22
@@ -26,15 +36,25 @@ all:
             port: 80
           - "http":
             port: 443
+          - "nodeexporter":
+            port: 9100
+            source: "{{ monitor_server }}"
+            sourceIPv6: "2604:a880:cad:d0::f49:4001"
         firewall_docker_interface: eth0
         firewall_docker_ports:
           - "ssl":
             port: 80
           - "http":
             port: 443
+          - "cAdvisor":
+            port: "{{ cadvisor_exporter_port }}"
+            protocol: tcp
+            source: "{{ monitor_server }}"
+            sourceIPv6: "2604:a880:cad:d0::f49:4001"
+
 
       hosts:
-        saturn.hypha.coop:
+        saturn-l1-1.hypha.coop:
         
 
     
