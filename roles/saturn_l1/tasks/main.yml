@@ -1,57 +1,62 @@
 ---
-- name: Create saturn-l1 directory
-  file:
-    path: /opt/saturn-l1
-    state: directory
-    owner: root
-    group: root
+
+### Enable LOKI Logger Driver and settings
+- name: Install LOKI Driver
+  shell: "docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions"
+  when: browsertrix_loki is defined
+  ignore_errors: true
+
+- name: Enable LOKI Docker Driver
+  template:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
 
 - name: Create storage directory
   file:
-    path: /mnt/md0
+    path: /mnt/data
     state: directory
     owner: root
     group: root
 
-- name: Create saturn storagedirectory
+- name: Create saturn home directory
   file:
-    path: /mnt/md0/saturn
+    path: /mnt/data/saturn
     state: directory
     owner: root
     group: root
 
-- name: download run command
+- name: Download run command
   get_url:
     force: true
     url: "https://raw.githubusercontent.com/filecoin-saturn/L1-node/main/run.sh"
-    dest: /opt/saturn-l1/run.sh
+    dest: /mnt/data/saturn/run.sh
     mode: 0777
 
-- name: download update  command
+- name: Ddownload update command
   get_url:
     force: true
     url: "https://raw.githubusercontent.com/filecoin-saturn/L1-node/main/update.sh"
-    dest: /opt/saturn-l1/update.sh
+    dest: /mnt/data/saturn/update.sh
     mode: 0777
 
-- name: provision config
+- name: Provision config
   template:
     src: init.sh
-    dest: /opt/saturn-l1/init.sh
+    dest: /mnt/data/saturn/init.sh
     mode: 0777
     
 - name: Ensure update happens every 5 mins
   ansible.builtin.cron:
     name: "update"
     minute: "*/5"
-    job: "/opt/saturn-l1/init.sh update.sh >> /opt/saturn-l1/l1-cron.log"
+    job: "/mnt/data/saturn/init.sh update.sh 2> /dev/null >> /mnt/data/saturn/l1-cron.log"
 
 - name: Run docker
   ansible.builtin.shell: ./init.sh run.sh
   args:
-    chdir: /opt/saturn-l1/
+    chdir: /mnt/data/saturn/
 
 - name: Update docker
   ansible.builtin.shell: ./init.sh update.sh
   args:
-    chdir: /opt/saturn-l1/
+    chdir: /mnt/data/saturn/

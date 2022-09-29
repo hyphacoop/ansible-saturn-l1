@@ -17,7 +17,7 @@ all:
  
     SATURN_FILECOIN_ADDRESS: "f17zefq6hzyqoqktmrnpllqby5x773znxpgtv2dty"
     SATURN_EMAIL: "infra@hypha.coop"
-    SATURN_NETWORK: "test"
+    SATURN_NETWORK: "main"
 
     monitor_server: monitor.prod.hypha.coop
     loki_url: "https://{{monitor_server}}:443/loki/api/v1/push"
@@ -40,7 +40,7 @@ all:
             port: 9100
             source: "{{ monitor_server }}"
             sourceIPv6: "2604:a880:cad:d0::f49:4001"
-        firewall_docker_interface: eth0
+        firewall_docker_interface: eno1
         firewall_docker_ports:
           - "ssl":
             port: 80
@@ -51,8 +51,6 @@ all:
             protocol: tcp
             source: "{{ monitor_server }}"
             sourceIPv6: "2604:a880:cad:d0::f49:4001"
-
-
       hosts:
         saturn-l1-1.hypha.coop:
         
