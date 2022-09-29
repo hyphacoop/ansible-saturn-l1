@@ -49,7 +49,7 @@
   ansible.builtin.cron:
     name: "update"
     minute: "*/5"
-    job: "/mnt/data/saturn/init.sh update.sh 2> /dev/null >> /mnt/data/saturn/l1-cron.log"
+    job: "/mnt/data/saturn/init.sh update.sh >> /mnt/data/saturn/l1-cron.log 2>&1"
 
 - name: Run docker
   ansible.builtin.shell: ./init.sh run.sh
