@@ -3,13 +3,14 @@
 ### Enable LOKI Logger Driver and settings
 - name: Install LOKI Driver
   shell: "docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions"
-  when: browsertrix_loki is defined
+  when: loki_url is defined
   ignore_errors: true
 
 - name: Enable LOKI Docker Driver
   template:
     src: daemon.json
     dest: /etc/docker/daemon.json
+  when: loki_url is defined
 
 - name: Create storage directory
   file:

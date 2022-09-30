@@ -20,7 +20,8 @@ all:
     SATURN_NETWORK: "main"
 
     monitor_server: monitor.prod.hypha.coop
-    loki_url: "https://{{monitor_server}}:443/loki/api/v1/push"
+    loki_url: "{{monitor_server}}:443/loki/api/v1/push"
+    loki_protocol: "https"
     loki_username: loki
     loki_password: "{{secret_loki_password}}"
     cadvisor_exporter_port: 9110

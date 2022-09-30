@@ -1,7 +1,7 @@
 {
     "log-driver": "loki",
     "log-opts": {
-        "loki-url": "https://{{loki_username}}:{{loki_password}}@{{loki_url}}",
+        "loki-url": "{{loki_protocol}}://{{loki_username}}:{{loki_password}}@{{loki_url}}",
         "loki-batch-size": "300",
         "loki-external-labels": "job=docker,hostname={{ inventory_hostname }}"
     }
