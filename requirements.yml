@@ -2,7 +2,7 @@
 collections:
 - name: https://github.com/hyphacoop/ansible-common.git
   type: git
-  version: dev
+  version: master
 
 roles:
 - src: geerlingguy.docker  
