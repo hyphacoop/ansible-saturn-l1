@@ -15,8 +15,8 @@ all:
       - name: "elon"
         key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCt7N4cJCFFmetGyDo2giMdPlHOBOdEJt8DnidBTMxevlGi02YVLwdYwbPtdoSHJKRlY4boV80sPOhMI3Im2TXNXHQIhO2LWKdSUTdfFU5ul+ySeZlUm3eDptMAYhQgZ772rDzq3gbr014TL1YHpepF1L0zwZgY03OHmP741hcaIjMxc4xSNs09auE++Ob+n5Nu9OEFEAIUKm7UVYDTY9iLVN6hj7eXAuMzFvvHGptvfosLjLxk+zx6VHcKdu9EZT/OtNjSyCDfuXyWt3Yfg9aiB32W7GftlWMbjG9+3W7hFiX9zAOrLkZYqXQ89h0B8IgMK3AZCE73PHa6Rl1XaekSnrwcDDzh3Ac2HeVSveHmuJPzX641f67+jOt4JBgsS/v8pPAvdXyeOBCcE6OT58qKMH/nDdUAryY7JhnrxIImLuAiUR3aRdAM/M0Q9C56/ctLd8gfAT3+1vuxraTgpmmhvqgZPFUAeRl40Ct//DSJAXA3jYOx8VT4D9M+aUzXJEDl0hm5Q4IT2zzr1eikVqJLN1199oAI7pm/ukRARBXucFgY/RyYq0oFfDnuJnwTmnjViDKzRrlCNiKKQi4k8qeoVslUxYj0dUOmUU8rjnHJ1N0eZUmZ/zl4WGQRNbLzAe4ljyG2HH4o89TEfdvwSal1Yh1Uflzr3SwwxJWJOLVMPQ== elon@hypha"
  
-    SATURN_FILECOIN_ADDRESS: "f17zefq6hzyqoqktmrnpllqby5x773znxpgtv2dty"
-    SATURN_EMAIL: "infra@hypha.coop"
+    SATURN_FILECOIN_ADDRESS: "{{ secret_filecoin_waller }}"
+    SATURN_EMAIL: "{{ secret_infra_email }}"
     SATURN_NETWORK: "main"
 
     monitor_server: monitor.prod.hypha.coop
